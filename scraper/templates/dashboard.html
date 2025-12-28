@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #0078d7;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        main {
+            max-width: 800px;
+            background-color: white;
+            margin: 40px auto;
+            padding: 25px 40px;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            color: #0078d7;
+            border-bottom: 2px solid #0078d7;
+            padding-bottom: 5px;
+        }
+
+        form {
+            margin: 15px 0 25px 0;
+        }
+
+        input[type="text"] {
+            padding: 8px 10px;
+            margin: 6px 8px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #0078d7;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,120,215,0.3);
+        }
+
+        button {
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005fa3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f8f9fa;
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .flash-messages li {
+            font-weight: 600;
+        }
+
+        hr {
+            margin: 25px 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+        }
+
+        a {
+            color: #0078d7;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Welcome {{ session['email'] }} 👋</h2>
+    </header>
+
+    <main>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for category, message in messages %}
+                <li style="color: {% if category == 'success' %}green{% else %}red{% endif %};">
+                  {{ message }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <hr>
+
+        
+        <h3>Scrape Jobs Now</h3>
+        <form method="POST" action="{{ url_for('scrape_jobs') }}">
+            <label>Keyword:</label>
+            <input type="text" name="keyword" placeholder="e.g. Software Developer" required>
+            <label>Location:</label>
+            <input type="text" name="location" placeholder="e.g. Chennai" required>
+            <button type="submit">🔍 Scrape Jobs</button>
+        </form>
+
+        <hr>
+
+        <footer>
+            <a href="/jobs">View Scraped Jobs</a> | 
+            <a href="/logout">🚪 Logout</a>
+        </footer>
+    </main>
+</body>
+</html>
